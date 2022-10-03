@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <webots/Robot.hpp>
 #include <webots/Motor.hpp>
-#include <webots/display.hpp>
 #include <webots/DistanceSensor.hpp>
-#include <webots/position_sensor.hpp>
+#include <webots/PositionSensor.hpp>
 #include <webots/Camera.hpp>
+#include <webots/Node.hpp>
 
 
 
@@ -29,14 +29,24 @@ int main(int argc, char **argv) {
   rightMotor->setVelocity(1.0);
 
   // get robots initial position
-    leftMotor = wb_robot_get_device("left wheel motor");
-    rightMotor = wb_robot_get_device("right wheel motor");
-    wb_motor_set_position(left_motor, INFINITY);
-    wb_motor_set_position(right_motor, INFINITY);
+namespace webots
+class Node {
+  const double *getPosition() const;
+  const double *getOrientation() const;
+  const double *getPose(const Node* fromNode = nullptr) const;
+  void enablePoseTracking(int samplingPeriod, const Node *fromNode = nullprt) const;
+  void disablePoseTracking(const Node *fromNode = nullptr) const;
+  // ...
+}
+
+
+//set position of the wheels
+    wb_motor1_set_position(leftMotor, INFINITY);
+    wb_motor2_set_position(rightMotor, INFINITY);
 
   // set robots initial velocity
-    wb_motor_set_velocity(leftMotor, 1.0);
-    wb_motor_set_velocity(rightMotor, 1.0);
+    wb_motor1_set_velocity(leftMotor, 1.0);
+    wb_motor2_set_velocity(rightMotor, 1.0);
 
   //goal position of the robot
    float goal_x = -1.2;
@@ -45,14 +55,14 @@ int main(int argc, char **argv) {
  // robot get position sensors and enable them
  left_position_sensor = wb_robot_get_device("left wheel sensor");
  right_position_sensor = wb_robot_get_device("right wheel sensor");
- wb_position_sensor_enable(left_position_sensor, TIME_STEP);
- wb_position_sensor_enable(right_position_sensor, TIME_STEP);
+ wb_position_sensor1_enable(left_position_sensor, TIME_STEP);
+ wb_position_sensor2_enable(right_position_sensor, TIME_STEP);
 
 
    //initial  position if the robot
-   ot.result.x = 1;
-   ot.result.y = 1;
-   ot.result.theta = 0;
+  float int_x = 1;
+  float int_y = 1;
+  float int_theta = 0;
 
    // get display  of robot
     display = wb_robot_get_device("display");
@@ -73,7 +83,7 @@ int main(int argc, char **argv) {
 
 
  // defining the values of the attractive potential
- float d = 1
+ float d = 1;
  float d_goal = sqrt((goal_x - pos_x) * (goal_x - pos_x) + (goal_y - pos_y) * (goal_y - pos_y));
 
  // robot control code with attarctive potential and obstacle avoidance using Camera
