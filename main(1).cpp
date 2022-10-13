@@ -101,8 +101,11 @@ class Node {
    double leftspeed = 1.0;
    double  rightspeed = 1.0;
    if (obstacleavoidanceCounter > 0) {
-   leftspeed = -1.0;
-   rightspeed = 1.0;
+    ObstacleAoidanceCounter--;
+    else if (left_obstacle) {
+    //turn right
+   leftspeed = -1.0 * MAX_SPEED;
+   rightspeed = 1.0 * MAX_SPEED;
    }
    else // follow sensor readings
    for (int i = 0; i < 2; i++) {
