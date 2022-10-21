@@ -93,6 +93,9 @@ class Node {
  if (d_goal  < 1);
   U_grad = sqrt((goal_x-int_x)*2) + (goal_y-int_y)*2); // gradient of attractive potential
 
+     //to get the distance sensor values/readings
+     std::cout << "Distance Sensor left: " << dsL_val << std::endl;
+     std::cout << "Distance Sensor right: " << dsR_val << std::endl;
   else if {
   //obstacle avoidance
   int obstacleavoidanceCounter = 0;
